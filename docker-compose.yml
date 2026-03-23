@@ -1,0 +1,67 @@
+version: "3.9"
+
+services:
+  # API Gateway Service
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=${API_GATEWAY_PORT}
+      - AUTH_SERVICE_URL=${API_GATEWAY_AUTH_SERVICE_URL}
+      - ECOMMERCE_SERVICE_URL=${API_GATEWAY_ECOMMERCE_SERVICE_URL}
+      - RATE_LIMIT_WINDOW_MS=${API_GATEWAY_RATE_LIMIT_WINDOW_MS}
+      - RATE_LIMIT_MAX=${API_GATEWAY_RATE_LIMIT_MAX}
+      - NODE_ENV=${API_GATEWAY_NODE_ENV}
+    networks:
+      - ecommerce-network
+    restart: unless-stopped
+
+  # Auth Service
+  auth-service:
+    build:
+      context: ./Auth_Service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=${AUTH_SERVICE_PORT}
+      - MONGODB_URL=${AUTH_SERVICE_MONGODB_URL}
+      - DB_NAME=${AUTH_SERVICE_DB_NAME}
+      - JWT_SECRET=${AUTH_SERVICE_JWT_SECRET}
+      - JWT_REFRESH_SECRET=${AUTH_SERVICE_JWT_REFRESH_SECRET}
+      - JWT_ACCESS_EXPIRE=${AUTH_SERVICE_JWT_ACCESS_EXPIRE}
+      - JWT_REFRESH_EXPIRE=${AUTH_SERVICE_JWT_REFRESH_EXPIRE}
+      - NODE_ENV=${AUTH_SERVICE_NODE_ENV}
+    networks:
+      - ecommerce-network
+    restart: unless-stopped
+
+  # E-commerce Service
+  ecommerce-service:
+    build:
+      context: ./E-commerce_Service
+      dockerfile: Dockerfile
+    container_name: ecommerce-service
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=${ECOMMERCE_SERVICE_PORT}
+      - MONGODB_URL=${ECOMMERCE_SERVICE_MONGODB_URL}
+      - DB_NAME=${ECOMMERCE_SERVICE_DB_NAME}
+      - API_GATEWAY_URL=${ECOMMERCE_SERVICE_API_GATEWAY_URL}
+      - NODE_ENV=${ECOMMERCE_SERVICE_NODE_ENV}
+    networks:
+      - ecommerce-network
+    restart: unless-stopped
+
+# Networks
+  ecommerce-network:
+    driver: bridge
+    name: ecommerce-network
+
+
