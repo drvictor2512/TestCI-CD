@@ -9,6 +9,9 @@ services:
     container_name: api-gateway
     ports:
       - "3000:3000"
+    volumes:
+      - ./api-gateway:/app            # Map code từ máy vào container
+      - /app/node_modules             # Giữ node_modules của container riêng biệt
     environment:
       - PORT=${API_GATEWAY_PORT}
       - AUTH_SERVICE_URL=${API_GATEWAY_AUTH_SERVICE_URL}
@@ -23,11 +26,14 @@ services:
   # Auth Service
   auth-service:
     build:
-      context: ./Auth_Service
+      context: ./auth_service
       dockerfile: Dockerfile
     container_name: auth-service
     ports:
       - "3001:3001"
+    volumes:
+      - ./auth_service:/app           # Map code từ máy vào container
+      - /app/node_modules
     environment:
       - PORT=${AUTH_SERVICE_PORT}
       - MONGODB_URL=${AUTH_SERVICE_MONGODB_URL}
@@ -44,11 +50,14 @@ services:
   # E-commerce Service
   ecommerce-service:
     build:
-      context: ./E-commerce_Service
+      context: ./e_commerce_service
       dockerfile: Dockerfile
     container_name: ecommerce-service
     ports:
       - "3002:3002"
+    volumes:
+      - ./e_commerce_service:/app     # Map code từ máy vào container
+      - /app/node_modules
     environment:
       - PORT=${ECOMMERCE_SERVICE_PORT}
       - MONGODB_URL=${ECOMMERCE_SERVICE_MONGODB_URL}
@@ -60,8 +69,7 @@ services:
     restart: unless-stopped
 
 # Networks
+networks:
   ecommerce-network:
     driver: bridge
     name: ecommerce-network
-
-

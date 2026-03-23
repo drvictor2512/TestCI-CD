@@ -29,7 +29,7 @@ const startServer = async () => {
     try {
         await connectDB();
         app.listen(PORT, () => {
-            console.log(`\n Auth Service running on port ${PORT}`);
+            console.log(`\n --- AUTH SERVICE ĐÃ NHẬN CODE MỚI TRÊN PORT  ${PORT} ---`);
         });
     } catch (error) {
         console.error("Failed to start Auth Service:", error);
