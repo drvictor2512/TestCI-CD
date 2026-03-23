@@ -21,7 +21,7 @@ jobs:
       - name: Auth Service
         uses: docker/build-push-action@v5
         with:
-          context: ./auth_service
+          context: ./authservice
           push: true
           tags: thangtranvan2512/e-commerce_project-auth-service:latest
 
