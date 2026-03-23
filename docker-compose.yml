@@ -26,13 +26,13 @@ services:
   # Auth Service
   auth-service:
     build:
-      context: ./auth_service
+      context: ./authservice
       dockerfile: Dockerfile
     container_name: auth-service
     ports:
       - "3001:3001"
     volumes:
-      - ./auth_service:/app           # Map code từ máy vào container
+      - ./authservice:/app           # Map code từ máy vào container
       - /app/node_modules
     environment:
       - PORT=${AUTH_SERVICE_PORT}
