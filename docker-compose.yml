@@ -3,6 +3,7 @@ version: "3.9"
 services:
   # API Gateway Service
   api-gateway:
+    image: "thangtranvan2512/e-commerce_project-api-gateway"
     build:
       context: ./api-gateway
       dockerfile: Dockerfile
@@ -25,6 +26,7 @@ services:
 
   # Auth Service
   auth-service:
+    image: "thangtranvan2512/e-commerce_project-auth-service"
     build:
       context: ./authservice
       dockerfile: Dockerfile
@@ -49,6 +51,7 @@ services:
 
   # E-commerce Service
   ecommerce-service:
+    image: "thangtranvan2512/e-commerce_project-ecommerce-service"
     build:
       context: ./e_commerce_service
       dockerfile: Dockerfile
